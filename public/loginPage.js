@@ -1,7 +1,5 @@
 'use strict'
 
-const { response } = require("express");
-
 const userForm = new UserForm();
 userForm.loginFormCallback = function(data) {
     console.log(data);
