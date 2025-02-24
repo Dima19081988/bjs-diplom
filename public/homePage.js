@@ -30,73 +30,76 @@ function currencyRates() {
 currencyRates();
 setInterval(currencyRates, 60000);
 
-const addMoneyForm = new MoneyManager;
-addMoneyForm.addMoneyCallback = function(data) {
+const myManager = new MoneyManager;
+myManager.addMoneyCallback = function(data) {
 	ApiConnector.addMoney(data, callback => {
 		if (callback.success) {
 			ProfileWidget.showProfile(callback.data);
 			console.log("Баланс успешно пополнен");
+			myManager.setMessage(true, "Баланс успешно пополнен");
 		} else {
-			errorMessageBlock.setMessage(false, callback.error);
+			myManager.setMessage(false, callback.error);
 		}
 	})
 }
 
-const conversionMoneyForm = new MoneyManager;
-conversionMoneyForm.conversionMoneyCallback = function(data) {
+myManager.conversionMoneyCallback = function(data) {
 	ApiConnector.convertMoney(data, callback => {
 		if (callback.success) {
 			ProfileWidget.showProfile(callback.data);
 			console.log("Конвертация выполнена");
+			myManager.setMessage(true, "Конвертация выполнена");
 		} else {
-			errorMessageBlock.setMessage(false, callback.error);
+			myManager.setMessage(false, callback.error);
 		}
 	})
 }
 
-const sendMoneyForm = new MoneyManager;
-sendMoneyForm.sendMoneyCallback = function(data) {
+myManager.sendMoneyCallback = function(data) {
 	ApiConnector.transferMoney(data, callback => {
 		if (callback.success) {
 			ProfileWidget.showProfile(callback.data);
 			console.log("Перевод выполнен");
+			myManager.setMessage(true, "Перевод выполнен");
 		} else {
-			errorMessageBlock.setMessage(false, callback.error);
+			myManager.setMessage(false, callback.error);
 		}
 	})
 }
 
-const favoritesTableBody = new FavoritesWidget;
-ApiConnector.getFavorites = function(callback) {
+const myFavorites = new FavoritesWidget;
+ApiConnector.getFavorites((callback) => {
 	if (callback.success) {
-		favoritesTableBody.clearTable();
-		favoritesTableBody.fillTable(callback.data);
-		favoritesTableBody.updateUsersList(callback.data);
+		myFavorites.clearTable();
+		myFavorites.fillTable(callback.data);
+		myFavorites.updateUsersList(callback.data);
 	} else {
-		favoritesMessageBox.setMessage(false, callback.error);
+		myFavorites.setMessage(false, callback.error);
 	}
-}
+});
 
-const addUserToFavoritesForm = new FavoritesWidget;
-addUserToFavoritesForm.addUserCallback = function(data) {
+myFavorites.addUserCallback = function(data) {
 	ApiConnector.addUserToFavorites(data, callback => {
 		if (callback.success) {
-			favoritesTableBody.clearTable();
-			favoritesTableBody.fillTable(callback.data);
-			favoritesTableBody.updateUsersList(callback.data);
+			myFavorites.clearTable();
+			myFavorites.fillTable(callback.data);
+			myFavorites.updateUsersList(callback.data);
+			myFavorites.setMessage(true, "Пользователь добавлен в избранное");
 		} else {
-			favoritesMessageBox.setMessage(false, callback.error);
+			myFavorites.setMessage(false, callback.error);
 		}
 	})
 }
-addUserToFavoritesForm.removeUserCallback = function(data) {
+
+myFavorites.removeUserCallback = function(data) {
 	ApiConnector.removeUserFromFavorites(data, callback => {
 		if (callback.success) {
-			favoritesTableBody.clearTable();
-			favoritesTableBody.fillTable(callback.data);
-			favoritesTableBody.updateUsersList(callback.data);
+			myFavorites.clearTable();
+			myFavorites.fillTable(callback.data);
+			myFavorites.updateUsersList(callback.data);
+			myFavorites.setMessage(true, "Пользователь удалён из избранного");
 		} else {
-			favoritesMessageBox.setMessage(false, callback.error);
+			myFavorites.setMessage(false, callback.error);
 		}
 	})
 }
