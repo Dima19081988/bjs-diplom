@@ -72,7 +72,7 @@ ApiConnector.getFavorites((callback) => {
 	if (callback.success) {
 		myFavorites.clearTable();
 		myFavorites.fillTable(callback.data);
-		myFavorites.updateUsersList(callback.data);
+		myManager.updateUsersList(callback.data);
 	} else {
 		myFavorites.setMessage(false, callback.error);
 	}
@@ -83,7 +83,7 @@ myFavorites.addUserCallback = function(data) {
 		if (callback.success) {
 			myFavorites.clearTable();
 			myFavorites.fillTable(callback.data);
-			myFavorites.updateUsersList(callback.data);
+			myManager.updateUsersList(callback.data);
 			myFavorites.setMessage(true, "Пользователь добавлен в избранное");
 		} else {
 			myFavorites.setMessage(false, callback.error);
@@ -96,7 +96,7 @@ myFavorites.removeUserCallback = function(data) {
 		if (callback.success) {
 			myFavorites.clearTable();
 			myFavorites.fillTable(callback.data);
-			myFavorites.updateUsersList(callback.data);
+			myManager.updateUsersList(callback.data);
 			myFavorites.setMessage(true, "Пользователь удалён из избранного");
 		} else {
 			myFavorites.setMessage(false, callback.error);
